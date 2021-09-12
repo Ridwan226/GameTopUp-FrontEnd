@@ -1,6 +1,17 @@
-import Image from 'next/image';
+import {useCallback, useEffect, useState} from 'react';
+import {getFeatureGame} from '../../../services/player';
 import GameItem from '../../molecules/GameItem';
 export default function FeaturedGames() {
+  const [gameList, setGameList] = useState([]);
+
+  const getFearuteGameList = useCallback(async () => {
+    const data = await getFeatureGame();
+    setGameList(data);
+  }, []);
+
+  useEffect(() => {
+    getFearuteGameList();
+  });
   return (
     <section className="featured-game pt-50 pb-50">
       <div className="container-fluid">
@@ -11,32 +22,16 @@ export default function FeaturedGames() {
         <div
           className="d-flex flex-row flex-lg-wrap overflow-setting justify-content-lg-between gap-lg-3 gap-4"
           data-aos="fade-up">
-          <GameItem
-            title=" Super Mechs"
-            category="Mobile"
-            thumbnail="Thumbnail-1"
-          />
-          <GameItem
-            title=" Super Mechs"
-            category="Mobile"
-            thumbnail="Thumbnail-2"
-          />
-          <GameItem
-            title="Mobile Legends"
-            category="Mobile"
-            thumbnail="Thumbnail-3"
-          />
-
-          <GameItem
-            title=" Clash of Clans"
-            category="Mobile"
-            thumbnail="Thumbnail-4"
-          />
-          <GameItem
-            title=" Clash of Clans"
-            category="Mobile"
-            thumbnail="Thumbnail-5"
-          />
+          {gameList.map((item) => {
+            return (
+              <GameItem
+                key={item._id}
+                title={item.name}
+                category={item.category.name}
+                thumbnail={`http://localhost:4000/uploads/images/${item.thumbnail}`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
