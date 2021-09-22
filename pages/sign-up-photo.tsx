@@ -1,6 +1,8 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {useCallback, useEffect, useState} from 'react';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {setSignUp} from '../services/auth';
 import {getGameCategory} from '../services/player';
 
@@ -14,6 +16,8 @@ export default function SignUpPhoto() {
     email: '',
   });
 
+  const router = useRouter();
+
   const getGameCategoryApi = useCallback(async () => {
     const data = await getGameCategory();
     setCategories(data);
@@ -26,7 +30,7 @@ export default function SignUpPhoto() {
 
   useEffect(() => {
     const getLocalForm = localStorage.getItem('user-form');
-    setLocalForm(JSON.parse(getLocalForm));
+    setLocalForm(JSON.parse(getLocalForm!));
   }, []);
 
   const onSubmit = async () => {
@@ -34,7 +38,7 @@ export default function SignUpPhoto() {
     console.log('image', image);
 
     const getLocalForm = await localStorage.getItem('user-form');
-    const form = JSON.parse(getLocalForm);
+    const form = JSON.parse(getLocalForm!);
 
     const data = new FormData();
 
@@ -46,8 +50,15 @@ export default function SignUpPhoto() {
     data.append('favorite', favorite);
     data.append('phoneNumber', '08123');
 
-    const result = setSignUp(data);
-    console.log(result);
+    const result = await setSignUp(data);
+
+    if (result.error === true) {
+      toast.error(result.message);
+    } else {
+      toast.success('Registration successful');
+      localStorage.removeItem('user-form');
+      router.push('sign-up-success');
+    }
   };
 
   return (
@@ -136,6 +147,8 @@ export default function SignUpPhoto() {
           </div>
         </form>
       </div>
+
+      <ToastContainer />
     </section>
   );
 }
