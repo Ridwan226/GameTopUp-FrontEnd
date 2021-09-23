@@ -1,8 +1,8 @@
+import Cookies from 'js-cookie';
 import Link from 'next/link';
-import {useState} from 'react';
-import {ToastContainer, toast} from 'react-toastify';
 import {useRouter} from 'next/router';
-
+import {useState} from 'react';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {setLogIn} from '../../../services/auth';
 export default function SignInForm() {
@@ -23,7 +23,11 @@ export default function SignInForm() {
         toast.error(response.message);
       } else {
         toast.success('Login Berhasil');
-        router.push('/member');
+        const token = response.data.token;
+        console.log('response', token);
+        const tokenBase64 = btoa(token);
+        Cookies.set('token', tokenBase64);
+        router.push('/');
       }
     }
   };
