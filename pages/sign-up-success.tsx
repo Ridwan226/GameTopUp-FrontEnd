@@ -183,7 +183,7 @@ export default function SignUpSuccess() {
           </p>
         </div>
         <div className="button-group d-flex flex-column mx-auto">
-          <Link href="/member">
+          <Link href="/">
             <a
               className="btn btn-top-up fw-medium text-lg text-white rounded-pill"
               role="button">

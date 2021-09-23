@@ -9,7 +9,7 @@ export default function CheckOutConfirmation() {
         <span className="checkmark"></span>
       </label>
       <div className="d-md-block d-flex flex-column w-100 pt-50">
-        <Link href="./complete-checkout">
+        <Link href="/cekout">
           <a
             className="btn btn-confirm-payment rounded-pill fw-medium text-white border-0 text-lg"
             role="button">
