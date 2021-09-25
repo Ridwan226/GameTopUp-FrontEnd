@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Coustom404() {
   return (
     <section className="not-found mx-auto pt-145 pb-md-212 pb-100">
@@ -350,12 +352,13 @@ export default function Coustom404() {
           </p>
         </div>
         <div className="button-group d-flex flex-column mx-auto">
-          <a
-            className="btn btn-homepage fw-medium text-lg text-white rounded-pill"
-            href="#"
-            role="button">
-            Homepage
-          </a>
+          <Link href="/">
+            <a
+              className="btn btn-homepage fw-medium text-lg text-white rounded-pill"
+              role="button">
+              Homepage
+            </a>
+          </Link>
         </div>
       </div>
     </section>

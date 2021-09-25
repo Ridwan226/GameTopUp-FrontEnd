@@ -13,8 +13,6 @@ interface CheckOutProps {
 export default function Cekout(props: CheckOutProps) {
   const {user} = props;
 
-  console.log(user);
-
   return (
     <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
       <div className="container-fluid">
@@ -40,7 +38,15 @@ export default function Cekout(props: CheckOutProps) {
   );
 }
 
-export async function getServerSideProps({req}) {
+interface getServerSideProps {
+  req: {
+    cookies: {
+      token: string;
+    };
+  };
+}
+
+export async function getServerSideProps({req}: getServerSideProps) {
   const {token} = req.cookies;
 
   if (!token) {

@@ -1,9 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import SignInForm from '../components/organisms/SignInForm';
-import {ToastContainer, toast} from 'react-toastify';
-
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignIn() {
   return (
@@ -49,7 +46,6 @@ export default function SignIn() {
           </p>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 }

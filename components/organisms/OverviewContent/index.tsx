@@ -1,7 +1,31 @@
+import {useEffect, useState, useCallback} from 'react';
+import {setMemberOverview} from '../../../services/player';
 import Category from './Category';
+import {toast} from 'react-toastify';
 import TableRow from './TableRow';
+import {
+  HistoryTransitionTypes,
+  TopUpCategoriesTypes,
+} from '../../../services/datatypes';
 
 export default function OverviewContent() {
+  const [count, setCount] = useState([]);
+  const [data, setData] = useState([]);
+
+  const getMemberOverviesAPI = useCallback(async () => {
+    const response = await setMemberOverview();
+    if (response.error === true) {
+      toast.error(response.message);
+    } else {
+      setCount(response.data.count);
+      setData(response.data.data);
+    }
+  }, []);
+
+  useEffect(() => {
+    getMemberOverviesAPI();
+  }, []);
+
   return (
     <main className="main-wrapper">
       <div className="ps-lg-0">
@@ -12,23 +36,16 @@ export default function OverviewContent() {
           </p>
           <div className="main-content">
             <div className="row">
-              <Category nominal={18500000} icon="ic-desktop">
-                Game <br /> Desktop
-              </Category>
-
-              <Category nominal={18500000} icon="ic-mobile">
-                <p className="color-palette-1 mb-0 ms-12">
-                  Game
-                  <br /> Mobile
-                </p>
-              </Category>
-
-              <Category nominal={5000000} icon="ic-desktop">
-                <p className="color-palette-1 mb-0 ms-12">
-                  Other
-                  <br /> Categories
-                </p>
-              </Category>
+              {count.map((item: TopUpCategoriesTypes) => {
+                return (
+                  <Category
+                    key={item._id}
+                    nominal={item.value}
+                    icon="ic-desktop">
+                    Game <br /> {item.name}
+                  </Category>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -49,14 +66,19 @@ export default function OverviewContent() {
                 </tr>
               </thead>
               <tbody>
-                <TableRow
-                  title="Legends:The NewBattle 2021"
-                  item={200}
-                  category="Desktop"
-                  price={290000}
-                  status="Pending"
-                  image="overview-1"
-                />
+                {data.map((item: HistoryTransitionTypes) => {
+                  return (
+                    <TableRow
+                      key={item._id}
+                      title={item.historyVoucherTopup.gameName}
+                      item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
+                      category={item.historyVoucherTopup.category}
+                      price={item.value}
+                      status={item.status}
+                      image={item.historyVoucherTopup.thumbnail}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>

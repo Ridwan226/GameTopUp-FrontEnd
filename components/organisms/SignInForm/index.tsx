@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
 import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import {setLogIn} from '../../../services/auth';
 export default function SignInForm() {
   const [email, setEmail] = useState('');
