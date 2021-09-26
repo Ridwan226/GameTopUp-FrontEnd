@@ -1,7 +1,30 @@
 import ButtonTab from './ButtonTab';
 import TabelRow from './TabelRow';
+import {useEffect, useState, useCallback} from 'react';
+import {getMemberTransaction} from '../../../services/member';
+import {toast} from 'react-toastify';
+import NumberFormat from 'react-number-format';
 
 export default function TransactionContent() {
+  const [total, setTotal] = useState(0);
+  const [transaction, setTransaction] = useState([]);
+  const getMemberTransactionAPI = useCallback(async () => {
+    const response = await getMemberTransaction();
+    if (response.error === true) {
+      toast.error(response.message);
+    } else {
+      setTotal(response.data.total);
+      setTransaction(response.data.data);
+      console.log(response);
+    }
+  }, []);
+
+  useEffect(() => {
+    getMemberTransactionAPI();
+  }, []);
+
+  const IMG = process.env.NEXT_PUBLIC_IMAGE2;
+
   return (
     <main className="main-wrapper">
       <div className="ps-lg-0">
@@ -11,7 +34,13 @@ export default function TransactionContent() {
         <div className="mb-30">
           <p className="text-lg color-palette-2 mb-12">You’ve spent</p>
           <h3 className="text-5xl fw-medium color-palette-1">
-            Rp 4.518.000.500
+            <NumberFormat
+              value={total}
+              prefix="Rp. "
+              displayType="text"
+              decimalSeparator=","
+              thousandSeparator="."
+            />
           </h3>
         </div>
         <div className="row mt-30 mb-20">
@@ -42,14 +71,19 @@ export default function TransactionContent() {
                 </tr>
               </thead>
               <tbody id="list_status_item">
-                <TabelRow
-                  title="Call of Duty:Modern"
-                  category="Desktop"
-                  item={20}
-                  price={1000000}
-                  status="Pending"
-                  image="overview-1"
-                />
+                {transaction.map((item) => {
+                  return (
+                    <TabelRow
+                      key={item._id}
+                      title={item.historyVoucherTopup.category}
+                      category={item.historyVoucherTopup.coinName}
+                      item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName} `}
+                      price={item.value}
+                      status={item.status}
+                      image={`${IMG}/${item.historyVoucherTopup.thumbnail}`}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -1,5 +1,5 @@
 import {useEffect, useState, useCallback} from 'react';
-import {setMemberOverview} from '../../../services/player';
+import {setMemberOverview} from '../../../services/member';
 import Category from './Category';
 import {toast} from 'react-toastify';
 import TableRow from './TableRow';
