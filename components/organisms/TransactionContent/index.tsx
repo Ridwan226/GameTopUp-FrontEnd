@@ -8,8 +8,10 @@ import NumberFormat from 'react-number-format';
 export default function TransactionContent() {
   const [total, setTotal] = useState(0);
   const [transaction, setTransaction] = useState([]);
-  const getMemberTransactionAPI = useCallback(async () => {
-    const response = await getMemberTransaction();
+  const [tab, setTab] = useState('all');
+
+  const getMemberTransactionAPI = useCallback(async (value) => {
+    const response = await getMemberTransaction(value);
     if (response.error === true) {
       toast.error(response.message);
     } else {
@@ -20,8 +22,13 @@ export default function TransactionContent() {
   }, []);
 
   useEffect(() => {
-    getMemberTransactionAPI();
+    getMemberTransactionAPI('all');
   }, []);
+
+  const onTabClick = (value) => {
+    setTab(value);
+    getMemberTransactionAPI(value);
+  };
 
   const IMG = process.env.NEXT_PUBLIC_IMAGE2;
 
@@ -46,10 +53,26 @@ export default function TransactionContent() {
         <div className="row mt-30 mb-20">
           <div className="col-lg-12 col-12 main-content">
             <div id="list_status_title">
-              <ButtonTab title="All Trx" active />
-              <ButtonTab title="Success" active={false} />
-              <ButtonTab title="Pending" active={false} />
-              <ButtonTab title="Failed" active={false} />
+              <ButtonTab
+                title="All Trx"
+                active={tab === 'all'}
+                onClick={() => onTabClick('all')}
+              />
+              <ButtonTab
+                title="success"
+                active={tab === 'success'}
+                onClick={() => onTabClick('success')}
+              />
+              <ButtonTab
+                title="pending"
+                active={tab === 'pending'}
+                onClick={() => onTabClick('pending')}
+              />
+              <ButtonTab
+                title="failed"
+                active={tab === 'failed'}
+                onClick={() => onTabClick('failed')}
+              />
             </div>
           </div>
         </div>
