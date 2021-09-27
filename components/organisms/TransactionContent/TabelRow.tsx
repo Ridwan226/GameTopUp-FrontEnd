@@ -9,10 +9,11 @@ interface TabelRowProps {
   item: string;
   status: string;
   price: number;
+  id: string;
 }
 
 export default function TabelRow(props: TabelRowProps) {
-  const {image, title, category, item, price, status} = props;
+  const {image, title, category, item, price, status, id} = props;
   const statusClass = cx({
     'float-start icon-status': true,
     pending: status === 'pending',
@@ -61,7 +62,7 @@ export default function TabelRow(props: TabelRowProps) {
         </div>
       </td>
       <td>
-        <Link href="/member/transactions/detail">
+        <Link href={`/member/transactions/${id}`}>
           <a className="btn btn-status rounded-pill text-sm">Details</a>
         </Link>
       </td>

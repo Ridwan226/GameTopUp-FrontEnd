@@ -4,6 +4,7 @@ import {useEffect, useState, useCallback} from 'react';
 import {getMemberTransaction} from '../../../services/member';
 import {toast} from 'react-toastify';
 import NumberFormat from 'react-number-format';
+import {HistoryTransitionTypes} from '../../../services/datatypes';
 
 export default function TransactionContent() {
   const [total, setTotal] = useState(0);
@@ -94,7 +95,7 @@ export default function TransactionContent() {
                 </tr>
               </thead>
               <tbody id="list_status_item">
-                {transaction.map((item) => {
+                {transaction.map((item: HistoryTransitionTypes) => {
                   return (
                     <TabelRow
                       key={item._id}
@@ -104,6 +105,7 @@ export default function TransactionContent() {
                       price={item.value}
                       status={item.status}
                       image={`${IMG}/${item.historyVoucherTopup.thumbnail}`}
+                      id={item._id}
                     />
                   );
                 })}
