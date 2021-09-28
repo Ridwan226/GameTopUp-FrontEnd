@@ -26,3 +26,9 @@ export async function setMemberOverview() {
 
   return callAPI({url, method: 'GET', token: true});
 }
+
+export async function updateProfile(data: FormData) {
+  const url = `${ROOT_API}/${API_VERSION}/players/profile/update`;
+
+  return callAPI({url, method: 'PUT', data: data, token: true});
+}
