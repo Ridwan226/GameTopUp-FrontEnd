@@ -25,7 +25,6 @@ export const setLogIn = async (data: LoginTypes) => {
   // const response = await axios
   //   .post(`${ROOT_API}/${API_VERSION}/${URL}`, data)
   //   .catch((err) => err.response);
-  // console.log('data Response', response);
   // if (response.status > 300) {
   //   const res = {
   //     error: true,

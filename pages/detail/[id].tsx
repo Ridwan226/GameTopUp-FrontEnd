@@ -4,35 +4,49 @@ import Footer from '../../components/organisms/Footer';
 import Navbar from '../../components/organisms/Navbar';
 import TopUpForm from '../../components/organisms/TopUpForm';
 import TopUpItem from '../../components/organisms/TopUpItem';
-import {getDetailVoucher} from '../../services/player';
+import {
+  GameItemTypes,
+  NominalTypes,
+  PaymentTypes,
+} from '../../services/datatypes';
+import {getDetailVoucher, getFeatureGame} from '../../services/player';
 
-export default function Detail() {
-  const [dataItem, setDataItem] = useState({
-    name: '',
-    thumbnail: '',
-    category: {
-      name: '',
-    },
-  });
+interface DetailProps {
+  dataItem: GameItemTypes;
+  nominals: NominalTypes[];
+  payments: PaymentTypes[];
+}
 
-  const [nominals, setNominals] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const {query, isReady} = useRouter();
-
-  const getVoucherDetailApi = useCallback(async (id) => {
-    const data = await getDetailVoucher(id);
-    console.log(data);
-    setDataItem(data.detail);
-    localStorage.setItem('data-item', JSON.stringify(data.detail));
-    setNominals(data.detail.nominals);
-    setPayments(data.payment);
+export default function Detail({dataItem, nominals, payments}: DetailProps) {
+  useEffect(() => {
+    localStorage.setItem('data-item', JSON.stringify(dataItem));
   }, []);
 
-  useEffect(() => {
-    if (isReady) {
-      getVoucherDetailApi(query.id);
-    }
-  }, [isReady]);
+  // const [dataItem, setDataItem] = useState({
+  //   name: '',
+  //   thumbnail: '',
+  //   category: {
+  //     name: '',
+  //   },
+  // });
+
+  // const [nominals, setNominals] = useState([]);
+  // const [payments, setPayments] = useState([]);
+  // const {query, isReady} = useRouter();
+
+  // const getVoucherDetailApi = useCallback(async (id) => {
+  //   const data = await getDetailVoucher(id);
+  //   setDataItem(data.detail);
+  //   localStorage.setItem('data-item', JSON.stringify(data.detail));
+  //   setNominals(data.detail.nominals);
+  //   setPayments(data.payment);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isReady) {
+  //     getVoucherDetailApi(query.id);
+  //   }
+  // }, [isReady]);
 
   return (
     <>
@@ -60,4 +74,36 @@ export default function Detail() {
       <Footer />
     </>
   );
+}
+
+export async function getStaticPaths() {
+  const data = await getFeatureGame();
+  const paths = data.map((item: GameItemTypes) => {
+    return {
+      params: {id: item._id},
+    };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+interface GetStatusProps {
+  params: {
+    id: string;
+  };
+}
+
+export async function getStaticProps({params}: GetStatusProps) {
+  const {id} = params;
+  const data = await getDetailVoucher(id);
+  return {
+    props: {
+      dataItem: data.detail,
+      nominals: data.detail.nominals,
+      payments: data.payment,
+    },
+  };
 }

@@ -33,9 +33,6 @@ export default function SignUpPhoto() {
   }, []);
 
   const onSubmit = async () => {
-    console.log('favorite', favorite);
-    console.log('image', image);
-
     const getLocalForm = await localStorage.getItem('user-form');
     const form = JSON.parse(getLocalForm!);
 
@@ -92,7 +89,6 @@ export default function SignUpPhoto() {
                     name="avatar"
                     accept="image/png, image/jpeg"
                     onChange={(event) => {
-                      console.log(event.target.files);
                       const img = event.target.files[0];
                       setImagePreview(URL.createObjectURL(img));
                       return setImage(img);

@@ -14,7 +14,6 @@ interface TransactionDetailProps {
 
 export default function TransactionDetail(props: TransactionDetailProps) {
   const {transactionDetail} = props;
-  console.log(transactionDetail);
   return (
     <section className="transactions-detail overflow-auto">
       <SideBar activeMenu="transactions" />
@@ -36,7 +35,6 @@ interface getServerSideProps {
 
 export async function getServerSideProps({req, params}: getServerSideProps) {
   const {token} = req.cookies;
-  // console.log('params', params);
   const {idTrx} = params;
   if (!token) {
     return {

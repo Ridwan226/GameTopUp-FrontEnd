@@ -18,7 +18,6 @@ export default function TransactionContent() {
     } else {
       setTotal(response.data.total);
       setTransaction(response.data.data);
-      console.log(response);
     }
   }, []);
 

@@ -29,7 +29,6 @@ export default function EditProfile() {
   }, []);
 
   const onSubmit = async () => {
-    // console.log('user', user);
     const data = new FormData();
     data.append('image', user.avatar);
     data.append('name', user.name);
@@ -40,7 +39,6 @@ export default function EditProfile() {
       toast.success('Terupdate');
       router.push('/sign-in');
       Cookies.remove('token');
-      console.log(response);
     }
   };
 

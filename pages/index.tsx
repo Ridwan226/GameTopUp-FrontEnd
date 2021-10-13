@@ -8,6 +8,7 @@ import Navbar from '../components/organisms/Navbar';
 import Reached from '../components/organisms/Reached';
 import Story from '../components/organisms/Story';
 import TransactionStep from '../components/organisms/TransactionStep';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -16,6 +17,10 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Store GG</title>
+      </Head>
+
       <Navbar />
       <MainBanner />
       <TransactionStep />
